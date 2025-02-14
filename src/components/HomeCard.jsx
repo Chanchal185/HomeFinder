@@ -5,16 +5,20 @@ import { getAddressFromCoords } from '../api/apiService';
 
 const HomeCard = ({ home, onPress }) => {
   const { data: address, isLoading } = useQuery({
-    queryKey: ['address', home.latitude, home.longitude], 
+    queryKey: ['address', home.latitude, home.longitude],
     queryFn: () => getAddressFromCoords(home.latitude, home.longitude),
-    enabled: !!home.latitude && !!home.longitude 
+    enabled: !!home.latitude && !!home.longitude
   });
+
+  if (address === "Location not found") {
+    return null;
+  }
 
   return (
     <TouchableOpacity onPress={() => onPress(home)} style={styles.card}>
       <Image source={{ uri: home.imagerUrl }} style={styles.image} />
       <View style={styles.details}>
-        <Text style={styles.address}>{isLoading ? "Fetching address..." : address || "Address not available"}</Text>
+        <Text style={styles.address}>{isLoading ? "Fetching address" : address}</Text>
         <Text>{home.description}</Text>
       </View>
     </TouchableOpacity>
