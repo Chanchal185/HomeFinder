@@ -8,10 +8,19 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { getUserLocation, isWithinRange } from "../utils/locationUtils";
+import { useQuery } from '@tanstack/react-query';
 import { unlockHome } from "../api/apiService";
+import { getAddressFromCoords } from '../api/apiService';
+
 
 const DetailScreen = ({ route }) => {
-  const { home } = route.params;
+  const { home } = route.params
+  const { data: address, isLoading } = useQuery({
+    queryKey: ['address', home.latitude, home.longitude],
+    queryFn: () => getAddressFromCoords(home.latitude, home.longitude),
+    enabled: !!home.latitude && !!home.longitude
+  });
+
   const [isNearby, setIsNearby] = useState(false);
 
   useEffect(() => {
@@ -43,8 +52,8 @@ const DetailScreen = ({ route }) => {
         source={{ uri: home.imagerUrl }}
         style={{ width: "90%", height: 200, marginLeft: 15, marginTop: 10 }}
       />
-      <Text>{home.display_name}</Text>
-      <Text>{home.description}</Text>
+      <Text style={{color: 'black'}}>{address}</Text>
+      <Text style={{color: 'gray'}}>{home.description}</Text>
       <TouchableOpacity onPress={handleUnlock}>
         <Text
           style={{ color: isNearby ? "green" : "red", textAlign: "center" }}

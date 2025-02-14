@@ -19,7 +19,7 @@ const HomeCard = ({ home, onPress }) => {
       <Image source={{ uri: home.imagerUrl }} style={styles.image} />
       <View style={styles.details}>
         <Text style={styles.address}>{isLoading ? "Fetching address" : address}</Text>
-        <Text>{home.description}</Text>
+        <Text style={{color: 'gray'}} >{home.description}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   card: { padding: 10, backgroundColor: '#fff', margin: 20, borderRadius: 5 },
   image: { width: '90%', height: 200, borderRadius: 5, marginLeft: 15, marginTop: 10 },
   details: { marginLeft: 10, justifyContent: 'center' },
-  address: { fontWeight: 'bold', fontSize: 16, color: 'red' }
+  address: { fontWeight: 'bold', fontSize: 16, color: 'black' }
 });
 
 export default HomeCard;
